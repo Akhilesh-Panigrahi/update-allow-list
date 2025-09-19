@@ -1,59 +1,38 @@
 #python3
+# This script updates an IP address allow list by removing addresses specified in a remove list.
 
-import argparse
+# Define the list of IP addresses to be removed.
+# This was mentioned in the document but not defined, so I've created a sample list.
+remove_list = ["192.168.25.6", "192.168.25.14", "192.168.25.22"]
 
-def update_allow_list(file_path, remove_list):
-    """
-    Update the allow list file by removing IP addresses specified in remove_list.
+# Assign the filename of the allow list to a variable.
+import_file = "allow_list.txt"
 
-    Parameters:
-        file_path (str): Path to the "allow_list.txt" file.
-        remove_list (list of str): List of IP addresses to be removed.
-    """
-    try:
-        # Open the file to read its contents
-        with open(file_path, "r") as file:
-            data = file.read()
-    except FileNotFoundError:
-        print(f"Error: File '{file_path}' not found.")
-        return
+# Use a 'with' statement to open and read the file.
+# This ensures the file is automatically closed even if errors occur.
+with open(import_file, "r") as file:
+    # Read the entire file content into a single string.
+    ip_addresses = file.read()
 
-    # Convert the file content (string) into a list of IP addresses
-    ip_addresses = data.split()
+# Convert the string of IP addresses into a list of individual IP addresses.
+# The .split() method breaks the string apart by whitespace by default.
+ip_addresses = ip_addresses.split()
 
-    # Iterate through the remove list and remove matching IP addresses
-    for ip in remove_list:
-        if ip in ip_addresses:
-            ip_addresses.remove(ip)
+# Iterate through each IP address in the remove_list.
+for element in remove_list:
+    # Check if the IP address from the remove list is currently in the allow list.
+    if element in ip_addresses:
+        # If it is, remove that IP address from the allow list.
+        ip_addresses.remove(element)
 
-    # Convert the updated list back to a string with each IP on a new line
-    updated_data = "\n".join(ip_addresses)
+# Join the elements of the updated list back into a single string.
+# Each IP address will be separated by a newline character ("\n").
+ip_addresses = "\n".join(ip_addresses)
 
-    # Write the updated data back to the same file (overwriting it)
-    with open(file_path, "w") as file:
-        file.write(updated_data)
+# Open the original file in write mode ("w"), which overwrites its contents.
+with open(import_file, "w") as file:
+    # Write the updated string of IP addresses back into the file.
+    file.write(ip_addresses)
 
-    print("The allow list has been updated successfully.")
-
-def main():
-    parser = argparse.ArgumentParser(
-        description="Update an IP allow list file by removing specified IP addresses."
-    )
-    parser.add_argument(
-        "--file", 
-        type=str, 
-        default="allow_list.txt", 
-        help="Path to the allow list file (default: allow_list.txt)"
-    )
-    parser.add_argument(
-        "--remove", 
-        nargs='+', 
-        required=True, 
-        help="List of IP addresses to remove from the allow list (e.g., --remove 192.168.1.2 10.0.0.5)"
-    )
-    args = parser.parse_args()
-
-    update_allow_list(args.file, args.remove)
-
-if __name__ == "__main__":
-    main()
+# Optional: Print a confirmation message to the console.
+print("Allow list has been updated successfully.")
