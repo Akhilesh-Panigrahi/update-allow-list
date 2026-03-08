@@ -213,3 +213,11 @@ Every operation is automatically logged to both your terminal and `allow_list_ch
 
 - Python 3.10 or higher
 - No third-party packages — uses only the standard library (`argparse`, `ipaddress`, `logging`, `os`, `datetime`)
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+© 2025 Panigrahi
